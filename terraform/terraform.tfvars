@@ -1,0 +1,8 @@
+aws_region            = "us-east-1"
+project_name          = "devops-project-1"
+environment           = "dev"
+vpc_cidr             = "10.0.0.0/16"
+public_subnet_cidr   = "10.0.1.0/24"
+instance_type        = "t3.micro"
+ecr_repository_name  = "devops-project-1-app"
+public_key           = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDEvnhvhhw/hDzP9IAP0mQmjcDVHTEL+XMsWGNKyQ5KrB0FV+UN7rS6W19cxlqbB+iMGirFh8uRqqpgi/FHdPKoYienBGRFTOwzJK4O8JlhOVjfRbOlvp8KUxcLipykomiAnh5x0WqVd10LbcFTO6xZFiCRpZy0cX09wj3kmncZFaj1XkEaOsLi6qiBZ/T+zsUn++gsOYJjiQ7mFnKVHAMb4ZU5lBTqc7KZ6JqqiCfBZaoIEdlDJ9rXY+/9G7hyjFIgdtEsyZ5y/cUYWjY6/gMUdVrOAGtocPDy27MCvOadj9l6wk1sAdst0OhiX1dhYtjt36T7Ulk/jCwauM/xo8hbumP0J7HXPIioIOm1Ih53OTyiyeLfFCshQGFBhbrt3SwJpiw/FJjrKP5ij9y0YeTLY8RZCiRhWyFiUbHQm3tMikCoTKehgGhqgxBSTPuyUnnMehV/7FNngemHg5Cfq4eOMKAPsvjMM9KoRUgFOl7WKUntpoULdt4DfwO60sexAfplBaVc1Cqze/MSb8FrSnPHUvyimBtpFevxUMKDiGd/PTVFZ6F9RYYMISISweq5jVE12W1xdq/RIUbXqx0HrFtUDvJqy6BMjJiX/Vi/K6cjPU5RQMofoG/wqTbpMBA+DdoyHfzR/4JN5uZy6JogZwEpNmEz+VEv6/z6OsRXzAJ8Iw== kennethfeh@kenneths-MacBook-Pro.local"
