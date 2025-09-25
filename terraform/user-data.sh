@@ -18,15 +18,18 @@ unzip awscliv2.zip
 # Get region from instance metadata
 AWS_REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/region)
 
-# Login to ECR
-aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${ecr_repository_uri}
+# Login to ECR (registry only)
+ECR_REGISTRY=$(echo "${ecr_repository_uri}" | cut -d'/' -f1)
+aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$ECR_REGISTRY"
 
 # Create deployment script
 cat > /home/ec2-user/deploy.sh << 'EOF'
 #!/bin/bash
-set -e
+set -Eeuo pipefail
+trap 'echo "❌ Deployment failed at line $LINENO"' ERR
 
 ECR_URI="${ecr_repository_uri}"
+ECR_REGISTRY="${ecr_repository_uri%/*}"
 AWS_REGION="${aws_region}"
 IMAGE_TAG="$${1:-latest}"
 
@@ -41,11 +44,11 @@ docker rm devops-app || true
 
 # Login to ECR
 echo "Logging in to ECR..."
-aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_URI
+aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$ECR_REGISTRY"
 
 # Pull latest image
 echo "Pulling latest image..."
-docker pull $ECR_URI:$IMAGE_TAG
+docker pull "$ECR_URI:$IMAGE_TAG"
 
 # Start new container
 echo "Starting new container..."
@@ -53,8 +56,8 @@ docker run -d \
   --name devops-app \
   -p 3000:3000 \
   --restart unless-stopped \
-  -e APP_VERSION=$IMAGE_TAG \
-  $ECR_URI:$IMAGE_TAG
+  -e APP_VERSION="$IMAGE_TAG" \
+  "$ECR_URI:$IMAGE_TAG"
 
 echo "✅ Deployment complete!"
 docker ps
