@@ -51,8 +51,8 @@ echo "Pulling image $ECR_URI:$IMAGE_TAG"
 if ! docker pull "$ECR_URI:$IMAGE_TAG"; then
   BRANCH_NAME=$(echo "$IMAGE_TAG" | cut -d'-' -f1)
   COMMIT_PART=$(echo "$IMAGE_TAG" | cut -d'-' -f2-)
-  if [[ "$IMAGE_TAG" == *-* && ${#COMMIT_PART} -ge 7 ]]; then
-    FALLBACK_TAG="$BRANCH_NAME-${COMMIT_PART:0:7}"
+  if [[ "$IMAGE_TAG" == *-* && $${#COMMIT_PART} -ge 7 ]]; then
+    FALLBACK_TAG="$BRANCH_NAME-$${COMMIT_PART:0:7}"
     echo "Primary tag not found, trying fallback $ECR_URI:$FALLBACK_TAG"
     docker pull "$ECR_URI:$FALLBACK_TAG"
     IMAGE_TAG="$FALLBACK_TAG"
