@@ -19,17 +19,17 @@ unzip awscliv2.zip
 AWS_REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/region)
 
 # Login to ECR (registry only)
-ECR_REGISTRY=$(echo "${ecr_repository_uri}" | cut -d'/' -f1)
+ECR_REGISTRY="${ecr_registry}"
 aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$ECR_REGISTRY"
 
 # Create deployment script
 cat > /home/ec2-user/deploy.sh << 'EOF'
 #!/bin/bash
 set -Eeuo pipefail
-trap 'echo "❌ Deployment failed at line $LINENO"' ERR
+trap 'echo "Deployment failed at line $LINENO"' ERR
 
 ECR_URI="${ecr_repository_uri}"
-ECR_REGISTRY="${ecr_repository_uri%/*}"
+ECR_REGISTRY="${ecr_registry}"
 AWS_REGION="${aws_region}"
 IMAGE_TAG="$${1:-latest}"
 

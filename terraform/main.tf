@@ -200,6 +200,7 @@ resource "aws_key_pair" "main" {
 locals {
   user_data = base64encode(templatefile("${path.module}/user-data.sh", {
     ecr_repository_uri = aws_ecr_repository.app.repository_url
+    ecr_registry       = split(aws_ecr_repository.app.repository_url, "/")[0]
     aws_region         = var.aws_region
   }))
 }
