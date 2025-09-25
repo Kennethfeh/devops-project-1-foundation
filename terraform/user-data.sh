@@ -49,8 +49,8 @@ aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS 
 # Pull latest image
 echo "Pulling image $ECR_URI:$IMAGE_TAG"
 if ! docker pull "$ECR_URI:$IMAGE_TAG"; then
-  BRANCH_NAME="${IMAGE_TAG%%-*}"
-  COMMIT_PART="${IMAGE_TAG#*-}"
+  BRANCH_NAME=$(echo "$IMAGE_TAG" | cut -d'-' -f1)
+  COMMIT_PART=$(echo "$IMAGE_TAG" | cut -d'-' -f2-)
   if [[ "$IMAGE_TAG" == *-* && ${#COMMIT_PART} -ge 7 ]]; then
     FALLBACK_TAG="$BRANCH_NAME-${COMMIT_PART:0:7}"
     echo "Primary tag not found, trying fallback $ECR_URI:$FALLBACK_TAG"
