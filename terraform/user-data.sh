@@ -71,6 +71,15 @@ docker run -d \
   -e APP_VERSION="$IMAGE_TAG" \
   "$ECR_URI:$IMAGE_TAG"
 
+echo "Waiting for application to become healthy..."
+sleep 10
+if ! curl -fsS http://localhost:3000/health; then
+  echo "Health check failed; dumping container status" >&2
+  docker ps
+  docker logs devops-app || true
+  exit 1
+fi
+
 echo "✅ Deployment complete!"
 docker ps
 EOF
